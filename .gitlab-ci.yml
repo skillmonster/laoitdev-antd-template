@@ -9,7 +9,7 @@ stages:
 cache:
   paths:
     - node_modules/
-    - packages/react/node_modules/
+    - packages/**/node_modules/
 
 # Define the image to be used for CI
 image: node:20
@@ -26,15 +26,13 @@ build:
     - yarn workspace react build # Ensure running the build script inside 'react' workspace
   artifacts:
     paths:
-      - 'packages/react/dist/' # Ensure this directory is where Vite outputs the build artifacts
+      - 'packages/**/dist/' # Ensure this directory is where Vite outputs the build artifacts
 
 # Deploy to GitLab Pages in the /public directory
 pages:
   stage: deploy
   script:
-    - mv packages/react/dist public/
+    - mv packages/**/dist public/
   artifacts:
     paths:
       - public/ # GitLab Pages will serve content from the 'public' directory
-  only:
-    - main # Only deploy from the main branch (optional)
