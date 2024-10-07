@@ -3,13 +3,7 @@ import { IError } from 'models/error';
 import { localStorageToken } from 'services/cache';
 import { handleTokenError } from '../cache/index';
 import { renewToken } from './renew_token';
-import { BrowserHistory, createBrowserHistory } from 'history';
-
-// Create a history instance only in the browser environment
-let history: BrowserHistory | string[];
-if (typeof window !== 'undefined') {
-  history = createBrowserHistory();
-}
+import { createBrowserHistory } from '@tanstack/react-router';
 
 // Define the refresh URL and base URL
 export const refreshURL = '/v1/refresh-token';
@@ -54,17 +48,13 @@ const createAxiosInstance = (headers: Record<string, string>) => {
 
         if (errNetWorking === 'timeout exceeded' || errNetWorking === 'Network Error') {
           handleTokenError();
-          if (history) {
-            history.push('/login'); // Ensure history is used only if available
-          }
+          createBrowserHistory().push('/login');
           return Promise.reject(axiosError);
         }
 
         if (errStatus === 'UNAUTHENTICATED' && !localStorageToken.getRefreshToken()) {
           handleTokenError();
-          if (history) {
-            history.push('/login');
-          }
+          createBrowserHistory().push('/login');
           return Promise.reject(error);
         }
 
@@ -88,9 +78,7 @@ const createAxiosInstance = (headers: Record<string, string>) => {
             return instance(originalRequest);
           } catch (error) {
             handleTokenError();
-            if (history) {
-              history.push('/login');
-            }
+            createBrowserHistory().push('/login');
             return Promise.reject(error);
           }
         }
