@@ -44,7 +44,7 @@ const Users: React.FC = () => {
 
   return (
     <PageLayout
-      header={<Breadcrumbs items={breadcrumbs} />}
+      breadcrumb={<Breadcrumbs items={breadcrumbs} />}
       title="user_management"
       filterButton={
         <>

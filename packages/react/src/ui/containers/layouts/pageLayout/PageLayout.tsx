@@ -8,7 +8,7 @@ const { Content } = Layout;
 const { Title } = Typography;
 
 interface Props {
-  header?: ReactNode;
+  breadcrumb?: ReactNode;
   title?: string;
   children: ReactNode;
   minFullScreen?: boolean;
@@ -19,7 +19,7 @@ interface Props {
 const PageLayout: FC<Props> = ({
   children,
   title,
-  header,
+  breadcrumb,
   minFullScreen = true,
   paper = true, // Render children in Card (instead of Paper) based on prop
   filterButton,
@@ -44,14 +44,14 @@ const PageLayout: FC<Props> = ({
       {/* Content */}
       <Content style={contentStyle}>
         <Container>
-          {/* Header */}
-          {header && (
+          {/* Breadcrumb */}
+          {breadcrumb && (
             <div
               style={{
                 position: 'absolute',
               }}
             >
-              {header}
+              {breadcrumb}
             </div>
           )}
 

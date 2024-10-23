@@ -19,7 +19,7 @@ const Profile: React.FC = () => {
 
   return (
     <PageLayout
-      header={<Breadcrumbs items={breadcrumbs} />}
+      breadcrumb={<Breadcrumbs items={breadcrumbs} />}
       title="profile"
       paper={false}
     >
