@@ -8,29 +8,26 @@ import i18n from 'ui/config/i18n';
 import { queryClient } from 'ui/config/react-query/client';
 import { ThemeProvider } from 'ui/containers/layouts/admin/ThemeContext';
 import { DialogProvider } from 'ui/hooks/DialogContext';
-import { AlertProvider } from 'ui/hooks/noti/useAlertProvider';
-import SnackbarProvider from 'ui/hooks/noti/useSnackbarProvider';
+import NotificationProvider from '@/ui/hooks/noti/useNotificationProvider';
 import 'ui/styles/css/App.css';
 import { router } from './router';
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ConfigProvider theme={themes}>
-        <AntdApp>
+      <AntdApp>
+        <ConfigProvider theme={themes}>
           <ThemeProvider>
             <I18nextProvider i18n={i18n}>
-              <AlertProvider>
-                <SnackbarProvider>
-                  <DialogProvider>
-                    <RouterProvider router={router} />
-                  </DialogProvider>
-                </SnackbarProvider>
-              </AlertProvider>
+              <NotificationProvider>
+                <DialogProvider>
+                  <RouterProvider router={router} />
+                </DialogProvider>
+              </NotificationProvider>
             </I18nextProvider>
           </ThemeProvider>
-        </AntdApp>
-      </ConfigProvider>
+        </ConfigProvider>
+      </AntdApp>
 
       {/* Add React Query Devtools */}
       <ReactQueryDevtools initialIsOpen={false} />

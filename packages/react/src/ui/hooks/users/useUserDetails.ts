@@ -1,10 +1,10 @@
+import useNoti from "@/ui/hooks/noti/useNoti";
 import { useQuery } from "@tanstack/react-query";
-import useAlerts from 'hooks/noti/useAlerts';
 import { getUserDetail } from "services/https/users";
 import { usersKeys } from ".";
 
 export const useUserDetails = (id: string) => {
-  const { addErrorAlert } = useAlerts();
+  const { addErrorNoti } = useNoti();
 
   // Get User Detail Data
   const { data: userDetail, isLoading } = useQuery({
@@ -13,7 +13,7 @@ export const useUserDetails = (id: string) => {
       try {
         return getUserDetail(id);
       } catch (error) {
-        addErrorAlert(error);
+        addErrorNoti(error);
       }
     },
     staleTime: Infinity,

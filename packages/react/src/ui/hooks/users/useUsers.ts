@@ -1,5 +1,5 @@
+import useNoti from "@/ui/hooks/noti/useNoti";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import useAlerts from 'hooks/noti/useAlerts';
 import { PaginationType } from "models/table";
 import { IUsersListParam, IUsersListRes } from "models/users";
 import { useMemo, useState } from "react";
@@ -11,7 +11,7 @@ export const useUsers = () => {
   const [valueFilter, setValueFilter] = useState<IUsersListParam['queryParam'] | null>(null);
 
   // Custom hooks
-  const { addErrorAlert } = useAlerts();
+  const { addErrorNoti } = useNoti();
 
   const defaultPagination = { pageIndex: 0, pageSize: 25 };
   const [pagination, setPagination] =
@@ -50,7 +50,7 @@ export const useUsers = () => {
           },
         });
       } catch (error) {
-        addErrorAlert(error);
+        addErrorNoti(error);
         throw error;
       }
     },

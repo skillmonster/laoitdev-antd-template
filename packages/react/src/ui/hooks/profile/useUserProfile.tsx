@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import useAlerts from 'hooks/noti/useAlerts';
 import { getUserProfile } from 'services/https/profile';
 import { userProfileKey } from '.';
+import useNoti from '../noti/useNoti';
 
 export const useUserProfile = () => {
-  const { addErrorAlert } = useAlerts();
+  const { addErrorNoti } = useNoti();
 
   // Fetch user profile data using useQuery
   const {
@@ -19,7 +19,7 @@ export const useUserProfile = () => {
       try {
         return getUserProfile();
       } catch (error) {
-        addErrorAlert(error);
+        addErrorNoti(error);
       }
     },
   });

@@ -1,11 +1,11 @@
-import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
-import useAlerts from 'hooks/noti/useAlerts';
 import { handleTokenError } from "@/services/cache";
 import { logoutCallApi } from "@/services/https/auth";
+import useNoti from "@/ui/hooks/noti/useNoti";
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
 
 export const useLogout = () => {
-  const { addErrorAlert } = useAlerts();
+  const { addErrorNoti } = useNoti();
 
   const navigate = useNavigate();
 
@@ -15,7 +15,7 @@ export const useLogout = () => {
       handleTokenError();
       navigate({ to: "/login" });
     },
-    onError: addErrorAlert,
+    onError: addErrorNoti,
   });
 
   const handleLogout = () => {

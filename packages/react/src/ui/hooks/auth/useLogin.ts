@@ -1,14 +1,14 @@
-import { useMutation } from "@tanstack/react-query";
-import { useTranslation } from "react-i18next";
 import { IAuth, LoginData } from "@/models/auth";
 import { localStorageToken } from "@/services/cache";
 import { loginCallApi } from "@/services/https/auth";
-import useAlerts from "../noti/useAlerts";
+import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
+import useNoti from "../noti/useNoti";
 
 export const useLogin = () => {
      const { t } = useTranslation();
-     const { addSuccessAlert, addErrorAlert } = useAlerts();
+     const { addSuccessNoti, addErrorNoti } = useNoti();
      const navigate = useNavigate();
 
      // Mutation for Login
@@ -22,9 +22,9 @@ export const useLogin = () => {
 
                navigate({ to: "/" });
 
-               addSuccessAlert(t("login_successfully"), t("welcome"));
+               addSuccessNoti(t("login_successfully"), t("welcome"));
           },
-          onError: addErrorAlert,
+          onError: addErrorNoti,
      });
 
      const handleLogin = (value: IAuth) => {
@@ -38,4 +38,4 @@ export const useLogin = () => {
           statusLogin,
           isSuccessLogin,
      };
-}
+};
