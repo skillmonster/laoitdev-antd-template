@@ -21,7 +21,7 @@ const Profile: React.FC = () => {
     <PageLayout
       breadcrumb={<Breadcrumbs items={breadcrumbs} />}
       title="profile"
-      paper={false}
+      paperContent={false}
     >
       <ProfileContents data={userInfo} isLoading={isLoading} />
     </PageLayout>

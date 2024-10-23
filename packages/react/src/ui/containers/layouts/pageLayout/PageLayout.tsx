@@ -12,7 +12,7 @@ interface Props {
   title?: string;
   children: ReactNode;
   minFullScreen?: boolean;
-  paper?: boolean;
+  paperContent?: boolean;
   filterButton?: ReactNode;
 }
 
@@ -21,7 +21,7 @@ const PageLayout: FC<Props> = ({
   title,
   breadcrumb,
   minFullScreen = true,
-  paper = true, // Render children in Card (instead of Paper) based on prop
+  paperContent = true, // Render children in Card (instead of Paper) based on prop
   filterButton,
 }) => {
   const { t } = useTranslation();
@@ -57,7 +57,7 @@ const PageLayout: FC<Props> = ({
 
           {/* Content Body */}
           <div style={{ marginTop: '1.8rem' }}>
-            {paper ? (
+            {paperContent ? (
               // Card acts as an equivalent for Paper in Ant Design
               <Card>
                 <div className="card-header">

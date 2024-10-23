@@ -21,7 +21,7 @@ const View: React.FC = () => {
     <PageLayout
       breadcrumb={<Breadcrumbs items={breadcrumbs} />}
       title="profile"
-      paper={false}
+      paperContent={false}
     >
       <ViewDetails data={userDetail} isLoading={isLoading} />
     </PageLayout>
