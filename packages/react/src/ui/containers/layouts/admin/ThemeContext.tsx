@@ -1,16 +1,9 @@
 /* eslint-disable react-refresh/only-export-components */
-import {
-  disable as disableDarkMode,
-  enable as enableDarkMode,
-} from 'darkreader';
-import React, {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+
+import { ConfigProvider } from 'antd'; // Ant Design's ConfigProvider for theme switch
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { localStorageData } from 'services/cache';
+import { darkTheme, themes } from 'theme/themeConfig'; // Import light and dark themes
 
 // Define the shape of the context value
 interface ThemeContextType {
@@ -18,49 +11,42 @@ interface ThemeContextType {
   handleThemeChange: (checked: boolean) => void;
 }
 
-// Create the context with a default value
+// Create the context with default values
 const ThemeContext = createContext<ThemeContextType>({
   isDark: false,
   handleThemeChange: () => {},
 });
 
-// Create a provider component
 interface ThemeProviderProps {
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
-export const ThemeModeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
+export const ThemeModeProvider: React.FC<ThemeProviderProps> = ({
+  children,
+}) => {
   const [isDark, setIsDark] = useState<boolean>(() => {
     const savedTheme = localStorageData.getTheme();
     return savedTheme === 'dark';
   });
 
   useEffect(() => {
-    if (isDark) {
-      enableDarkMode({
-        brightness: 100,
-        contrast: 110,
-        sepia: 10,
-      });
-      localStorageData.setTheme('dark');
-    } else {
-      disableDarkMode();
-      localStorageData.setTheme('light');
-    }
+    // Save the theme mode in localStorage when the theme is changed
+    localStorageData.setTheme(isDark ? 'dark' : 'light');
   }, [isDark]);
 
   const handleThemeChange = (checked: boolean) => {
-    setIsDark(checked);
+    setIsDark(checked); // Switch between dark and light modes
   };
 
   return (
     <ThemeContext.Provider value={{ isDark, handleThemeChange }}>
-      {children}
+      {/* Pass the appropriate theme configuration to Ant Design's ConfigProvider */}
+      <ConfigProvider theme={isDark ? darkTheme : themes}>
+        {children}
+      </ConfigProvider>
     </ThemeContext.Provider>
   );
 };
 
-// Create a custom hook to use the ThemeContext
-export const useTheme = () => {
-  return useContext(ThemeContext);
-};
+// Custom hook to use the ThemeContext
+export const useTheme = () => useContext(ThemeContext);

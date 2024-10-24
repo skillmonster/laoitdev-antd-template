@@ -29,7 +29,6 @@ export const Navbar: React.FC<Props> = (props) => {
     <>
       <Header
         style={{
-          backgroundColor: themes.token?.colorBgContainer,
           padding: '0 0 0 0',
           paddingTop: '0.5px',
           position: 'sticky',

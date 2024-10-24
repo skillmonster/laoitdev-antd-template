@@ -3,7 +3,6 @@ import { TanStackRouterDevtools } from '@tanstack/router-devtools';
 import { Layout } from 'antd';
 import { useAuth } from 'hooks/auth/useAuth';
 import 'styles/css/Layout.css';
-import { themes } from 'theme/themeConfig';
 import { Navbar } from './Navbar';
 
 const { Content } = Layout;
@@ -29,7 +28,6 @@ export const LayoutNavbar = () => {
               style={{
                 margin: '24px 16px 0',
                 overflow: 'auto', // Ensure the content scrolls independently
-                backgroundColor: themes.token?.colorBgLayout,
                 minHeight: '100vh', // Ensures the content occupies full height
               }}
             >
@@ -43,7 +41,7 @@ export const LayoutNavbar = () => {
 
       {/* Add TanStack Router Devtools */}
       {process.env.NODE_ENV === 'development' && (
-        <TanStackRouterDevtools position="bottom-right" initialIsOpen={false} />
+        <TanStackRouterDevtools position="bottom-left" initialIsOpen={false} />
       )}
     </>
   );

@@ -4,9 +4,8 @@ import { Layout } from 'antd';
 import { useAuth } from 'hooks/auth/useAuth';
 import { useLayout } from 'hooks/layouts/useLayout';
 import 'styles/css/Layout.css';
-import { themes } from 'theme/themeConfig';
-import { SidebarMenuNoIcon } from './SidebarMenuNoIcon';
 import { Navbar } from './Navbar';
+import { SidebarMenuNoIcon } from './SidebarMenuNoIcon';
 
 const { Content } = Layout;
 
@@ -38,7 +37,6 @@ export const LayoutSideBarNoIcon = () => {
               style={{
                 margin: '24px 16px 0',
                 overflow: 'auto', // Ensure the content scrolls independently
-                backgroundColor: themes.token?.colorBgLayout,
                 minHeight: '100vh', // Ensures the content occupies full height
               }}
             >
@@ -52,7 +50,7 @@ export const LayoutSideBarNoIcon = () => {
 
       {/* Add TanStack Router Devtools */}
       {process.env.NODE_ENV === 'development' && (
-        <TanStackRouterDevtools position="bottom-right" initialIsOpen={false} />
+        <TanStackRouterDevtools position="bottom-left" initialIsOpen={false} />
       )}
     </>
   );

@@ -59,7 +59,6 @@ export const tableStyle: TableStyle = {
       fontWeight: 'bold',
       textAlign: 'center',
       justifyContent: 'center',
-      backgroundColor: themes.token?.colorBgLayout,
     }),
   },
   muiTableBodyCellProps: {

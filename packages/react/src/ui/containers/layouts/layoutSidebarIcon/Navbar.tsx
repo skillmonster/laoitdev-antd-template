@@ -9,10 +9,10 @@ import { useLocation } from '@tanstack/react-router';
 import { Avatar, Col, Layout, Menu, Row } from 'antd';
 import 'antd/dist/reset.css'; // Ant Design reset styles
 import React from 'react';
-import { themes } from 'theme/themeConfig';
 import ChangeLanguage from '../ChangeLanguage';
 import ProfileDropdown from '../admin/ProfileDropdown';
 import ThemeSwitcher from '../admin/ThemeSwitcher';
+import { themes } from '@/ui/styles/theme/themeConfig';
 
 const { Header } = Layout;
 const { SubMenu } = Menu;
@@ -30,7 +30,6 @@ export const Navbar: React.FC<Props> = (props) => {
     <>
       <Header
         style={{
-          backgroundColor: themes.token?.colorBgContainer,
           padding: '0 0 0 0',
           paddingTop: '0.5px',
           position: 'sticky',

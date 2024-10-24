@@ -15,17 +15,17 @@ import { router } from './router';
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-        <ConfigProvider theme={themes}>
-          <ThemeModeProvider>
-            <I18nextProvider i18n={i18n}>
-              <NotificationProvider>
-                <DialogProvider>
-                  <RouterProvider router={router} />
-                </DialogProvider>
-              </NotificationProvider>
-            </I18nextProvider>
-          </ThemeModeProvider>
-        </ConfigProvider>
+      <ConfigProvider theme={themes}>
+        <ThemeModeProvider>
+          <I18nextProvider i18n={i18n}>
+            <NotificationProvider>
+              <DialogProvider>
+                <RouterProvider router={router} />
+              </DialogProvider>
+            </NotificationProvider>
+          </I18nextProvider>
+        </ThemeModeProvider>
+      </ConfigProvider>
 
       {/* Add React Query Devtools */}
       <ReactQueryDevtools initialIsOpen={false} />

@@ -22,7 +22,6 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f0f2f5;
 }
 
 /* Layout */
@@ -55,7 +54,6 @@ body {
 }
 
 .ant-card-bordered {
-  border: 4px solid #fafafa;
   border-radius: 4px;
 }
 

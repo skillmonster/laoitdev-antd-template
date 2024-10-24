@@ -3,9 +3,9 @@ import { Affix, Col, Image, Layout, Menu, Row } from 'antd';
 import LogoDark from 'assets/LaoITDevLogoDark.png';
 import LogoLight from 'assets/LaoITDevLogoLight.png';
 import React from 'react';
-import { themes, themeMode } from 'theme/themeConfig';
-import { useTheme } from '../admin/ThemeContext';
+import { themeMode } from 'theme/themeConfig';
 import { menuItems, renderMenuItems } from '../admin/MenuItems';
+import { useTheme } from '../admin/ThemeContext';
 
 const { Sider } = Layout;
 
@@ -41,7 +41,6 @@ export const SidebarMenuIcon: React.FC<Props> = (prop) => {
         offsetTop={0}
         style={{
           zIndex: 10,
-          backgroundColor: themes.token?.colorBgContainer,
           marginBottom: 12,
         }}
       >
@@ -64,7 +63,6 @@ export const SidebarMenuIcon: React.FC<Props> = (prop) => {
         style={{
           borderRight: 0,
           paddingBottom: 50,
-          backgroundColor: themes.token?.colorBgContainer,
           overflowY: 'auto', // Allow this section to scroll
           height: 'calc(100vh - 110px)', // Adjust height to account for sticky elements (logo and divider)
         }}

@@ -11,10 +11,13 @@
     "boxShadow": "0 0 10px 0 rgba(0, 0, 0, 0.1)",
     "colorBorderSecondary": "#D9D9D9",
     "borderRadius": 6,
-    "colorIcon": "#00000073",
-    "colorBgBase":"#ffffff"
+    "colorIcon": "#8C8C8C",
+    "colorBgBase": "#ffffff"
   },
   "components": {
+    "Layout": {
+      "headerBg": "#FAFAFA"
+    },
     "Button": {
       "colorPrimary": "#61B2DC",
       "colorPrimaryActive": "#0060B1"

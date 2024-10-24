@@ -50,14 +50,12 @@ export const Navbar: React.FC = () => {
     <>
       <Header
         style={{
-          backgroundColor: themes.token?.colorBgContainer,
           padding: '0 0 0 0',
           position: 'sticky',
           top: 0,
           zIndex: 10,
           width: '100%',
           boxShadow: '0 1px 1px rgba(0, 0, 0, 0.1)',
-          borderBottom: '0.5px solid #DEDEDE',
         }}
       >
         <Row justify="space-between">
@@ -159,7 +157,6 @@ export const Navbar: React.FC = () => {
           mode="inline" // Set the mobile menu to "inline" for collapsible submenus
           defaultSelectedKeys={[pathname]}
           style={{
-            backgroundColor: themes.token?.colorBgBase,
             paddingBottom: 10,
             overflowY: 'auto', // Allows the drawer content to scroll
             height: '100%', // Full mobile height
