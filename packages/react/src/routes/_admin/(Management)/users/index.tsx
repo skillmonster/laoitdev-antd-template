@@ -65,7 +65,7 @@ const Users: React.FC = () => {
       {/* Table UI */}
       <Table
         // Data
-        users={users}
+        data={users}
         // Pass data and pagination
         isLoading={isLoading}
         isError={isError}

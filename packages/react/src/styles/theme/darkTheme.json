@@ -1,6 +1,6 @@
 {
   "token": {
-    "colorPrimary": "#1A73E8",
+    "colorPrimary": "#559ABE",
     "colorBgLayout": "#000000",
     "colorLink": "#9A65EF",
     "colorSuccess": "#73D13D",
@@ -12,15 +12,16 @@
     "colorBorderSecondary": "#434343",
     "borderRadius": 6,
     "colorIcon": "#FFFFFFA6",
-    "colorBgBase": "#141414"
+    "colorBgBase": "#141414",
+    "colorBorder": "#dedede"
   },
   "components": {
     "Layout": {
       "headerBg": "#141414"
     },
     "Button": {
-      "colorPrimary": "#7DB7F0",
-      "colorPrimaryActive": "#0055A4"
+      "colorPrimary": "#559ABE",
+      "colorPrimaryActive": "#559ABE"
     },
     "Affix": {
       "colorPrimary": "#2C2C2C",

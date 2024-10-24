@@ -3,7 +3,7 @@
 import { ConfigProvider } from 'antd'; // Ant Design's ConfigProvider for theme switch
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { localStorageData } from 'services/cache';
-import { darkTheme, themes } from '@/styles/theme/themeConfig'; // Import light and dark themes
+import { darkTheme, themes as lightTheme } from '@/styles/theme/themeConfig'; // Import light and dark themes
 
 // Define the shape of the context value
 interface ThemeContextType {
@@ -41,7 +41,7 @@ export const ThemeModeProvider: React.FC<ThemeProviderProps> = ({
   return (
     <ThemeContext.Provider value={{ isDark, handleThemeChange }}>
       {/* Pass the appropriate theme configuration to Ant Design's ConfigProvider */}
-      <ConfigProvider theme={isDark ? darkTheme : themes}>
+      <ConfigProvider theme={isDark ? darkTheme : lightTheme}>
         {children}
       </ConfigProvider>
     </ThemeContext.Provider>

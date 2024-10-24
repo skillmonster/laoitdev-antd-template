@@ -22,6 +22,7 @@ const themes: ThemeConfig = {
           borderRadius: lightThemes.token.borderRadius,
           colorIcon: lightThemes.token.colorIcon,
           colorBgBase: lightThemes.token.colorBgBase,
+          colorBorder: lightThemes.token.colorBorder,
      },
      components: {
           Layout: {
