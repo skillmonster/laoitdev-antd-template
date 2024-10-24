@@ -1,9 +1,9 @@
 import { createRouter as createReactRouter } from '@tanstack/react-router';
-import { PageNotFound } from 'components/PageNotFound';
+import { PageNotFound } from '@/components/PageNotFound';
 import { routeTree } from './routeTree.gen';
 import { useAuth } from 'hooks/auth/useAuth';
-import { Loading } from 'ui/components/Loading';
-import { DefaultCatchBoundary } from 'ui/components/DefaultCatchBoundary';
+import { Loading } from '@/components/Loading';
+import { DefaultCatchBoundary } from '@/components/DefaultCatchBoundary';
 
 export function createRouter() {
   return createReactRouter({

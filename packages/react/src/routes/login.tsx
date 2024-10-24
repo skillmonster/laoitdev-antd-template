@@ -2,8 +2,8 @@ import TranslateOutlinedIcon from '@mui/icons-material/TranslateOutlined';
 import { createFileRoute } from '@tanstack/react-router';
 import { Col, Layout, Menu, Row } from 'antd';
 import ChangeLanguage from 'containers/layouts/ChangeLanguage';
+import { LoginForm } from 'containers/Login/LoginForm';
 import { useLogin } from 'hooks/auth/useLogin';
-import { LoginForm } from 'ui/containers/Login/LoginForm';
 import 'styles/css/Login.css';
 
 export const Route = createFileRoute('/login')({
