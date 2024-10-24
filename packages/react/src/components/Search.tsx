@@ -42,7 +42,6 @@ export const Search = ({
           control: (provided) => ({
             ...provided,
             borderColor: themes.token?.colorBorderSecondary,
-            backgroundColor: themes.token?.colorBgContainer,
           }),
         }}
         isClearable

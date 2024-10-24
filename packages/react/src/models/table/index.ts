@@ -29,7 +29,6 @@ export interface TableStyle {
     sx: {
       padding: number;
       px: number;
-      backgroundColor: string;
       boxShadow: string;
       height: string;
     };
@@ -78,7 +77,6 @@ export interface TableStyle {
     sx: {
       position: string;
       bottom: number;
-      backgroundColor: string;
       zIndex: number;
     };
   };

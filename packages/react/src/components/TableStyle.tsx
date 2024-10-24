@@ -24,7 +24,6 @@ export const tableStyle: TableStyle = {
     sx: {
       padding: 1,
       px: 2,
-      backgroundColor: 'transparent',
       boxShadow: 'none',
       height: '100%',
     },
@@ -80,7 +79,6 @@ export const tableStyle: TableStyle = {
     sx: {
       position: 'sticky',
       bottom: 0,
-      backgroundColor: '#FFF',
       zIndex: 1,
     },
   },
