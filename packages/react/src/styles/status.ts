@@ -1,13 +1,14 @@
 import { TFunction } from "i18next";
+import { themes } from "./theme/themeConfig";
 
 export const statusColor = (status: string) => {
   switch (status) {
     case 'ACTIVE':
-      return '#4CAF50';
+      return themes.token?.colorSuccess;
     case 'INACTIVE':
-      return '#D32F2F';
+      return themes.token?.colorError;
     default:
-      return '#424242';
+      return themes.token?.colorText;
   }
 };
 

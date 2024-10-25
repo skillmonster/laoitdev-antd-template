@@ -1,10 +1,11 @@
-import TranslateOutlinedIcon from '@mui/icons-material/TranslateOutlined';
 import { createFileRoute } from '@tanstack/react-router';
-import { Col, Layout, Menu, Row } from 'antd';
+import { Col, Image, Layout, Menu, Row } from 'antd';
+import LanguageIcon from 'assets/LanguageIcon.png';
 import ChangeLanguage from 'containers/layouts/ChangeLanguage';
 import { LoginForm } from 'containers/Login/LoginForm';
 import { useLogin } from 'hooks/auth/useLogin';
 import 'styles/css/Login.css';
+
 
 export const Route = createFileRoute('/login')({
   component: () => <Login />,
@@ -22,8 +23,11 @@ const Login: React.FC = () => {
           <Menu mode="vertical" className="menu custom-menu">
             <SubMenu
               title={
-                <TranslateOutlinedIcon
-                  sx={{ fontSize: '1.3rem', marginBottom: '-5px' }}
+                <Image
+                  src={LanguageIcon}
+                  preview={false}
+                  height={18}
+                  style={{ marginBottom: '5px' }}
                 />
               }
             >

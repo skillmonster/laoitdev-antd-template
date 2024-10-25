@@ -1,6 +1,6 @@
 import { useTheme } from '@/containers/layouts/admin/ThemeContext';
 import { RefetchOptions } from '@tanstack/react-query';
-import { Col, Row, Spin } from 'antd';
+import { Spin } from 'antd';
 import useInfiniteScroll from 'hooks/useInfiniteScroll'; // Custom infinite scroll hook
 import { t } from 'i18next';
 import { IOptionSelected, OptionType } from 'models/search';
@@ -40,74 +40,40 @@ export const Search = ({
     isLoading,
     nextPageToken, // Pagination token
     optionValue, // Available options
-  });
+  });  
 
   return (
     <div>
       <AsyncPaginate
-        controlShouldRenderValue={true}
-        styles={{
-          control: (provided) => ({
-            ...provided,
-            borderColor: currentTheme?.token?.colorBorder,
-            backgroundColor: currentTheme?.token?.colorBgContainer,
-            boxShadow: 'none', // No focus shadow
-            '&:hover': {
-              borderColor: currentTheme?.token?.colorPrimary, // Hover styles
-            },
-          }),
-          menu: (provided) => ({
-            ...provided,
-            backgroundColor: currentTheme?.token?.colorBgContainer,
-          }),
-          option: (provided, state) => ({
-            ...provided,
-            backgroundColor: state.isSelected
-              ? currentTheme?.token?.colorPrimary
-              : state.isFocused
-                ? `${currentTheme?.token?.colorPrimary}20` // Add lightened color on focus
-                : currentTheme?.token?.colorBgContainer,
-            color: state.isSelected
-              ? currentTheme?.token?.colorText
-              : currentTheme?.token?.colorText,
-            '&:active': {
-              backgroundColor:
-                currentTheme?.components?.Button?.colorPrimaryActive,
-            },
-          }),
-          placeholder: (provided) => ({
-            ...provided,
-            color: currentTheme?.token?.colorText,
-          }),
-          singleValue: (provided) => ({
-            ...provided,
-            color: currentTheme?.token?.colorText,
-          }),
-          input: (provided) => ({
-            ...provided,
-            color: currentTheme?.token?.colorText,
-          }),
-        }} // Reuse the styles based on theme
-        isClearable
-        isSearchable
-        loadOptions={loadOptions} // Provide options based on search or scrolling
-        onChange={(e) => onFilterSubmit({ id: e?.value })} // Handle selecting a search result
         name={name}
-        placeholder={
-          <Row>
-            <Col>
-              <span>{t(placeholder)}</span>
-            </Col>
-          </Row>
-        }
-        noOptionsMessage={() => t('no_more_results')} // If no results are available
-        loadingMessage={() => <Spin size="small" />} // Show loading indicator
+        loadOptions={loadOptions} // Provide options based on search input
+        onChange={(selected) => onFilterSubmit({ id: selected?.value })} // Handle selected item
         additional={{
-          page: 1, // Starting page for search and pagination
+          page: 1, // Infinite scroll pagination starting point
         }}
         menuPlacement="auto"
         menuPosition="fixed"
-        onMenuScrollToBottom={loadMoreData} // Load more data on scroll to bottom
+        onMenuScrollToBottom={loadMoreData} // Trigger loading more data on scroll down
+        isClearable
+        isSearchable
+        placeholder={t(placeholder)}
+        loadingMessage={() =>
+          isLoading ? <Spin size="small" /> : t('Loading...')
+        }
+        noOptionsMessage={() => t('No more results')}
+        styles={{
+          control: (base) => ({
+            ...base,
+            backgroundColor: currentTheme.token.colorBgContainer,
+          }),
+          option: (base, state) => ({
+            ...base,
+            backgroundColor: state.isFocused
+              ? `${currentTheme.token.colorPrimary}20`
+              : undefined,
+            color: currentTheme.token.colorText,
+          }),
+        }}
       />
     </div>
   );

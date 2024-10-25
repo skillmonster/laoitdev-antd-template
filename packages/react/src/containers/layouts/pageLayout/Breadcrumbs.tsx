@@ -14,7 +14,7 @@ const Breadcrumbs = ({ items }: BreadcrumbsProps) => {
         margin: '-12px 0 14px 0',
         color: themes.token?.colorText, // Custom styling from theme setting if preferred
       }}
-      separator={<span style={{ color: themes.token?.colorText }}> / </span>} // Slash separator
+      separator={<span> / </span>} // Slash separator
     >
       {items?.map((item, index) => (
         <Breadcrumb.Item key={index}>
@@ -25,7 +25,6 @@ const Breadcrumbs = ({ items }: BreadcrumbsProps) => {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                color: themes.token?.colorText,
               }}
             >
               {item?.icon &&
@@ -34,15 +33,12 @@ const Breadcrumbs = ({ items }: BreadcrumbsProps) => {
                 })}
 
               {/* Render translated title */}
-              <Typography.Text style={{ color: themes.token?.colorText }}>
-                {t(item.title)}
-              </Typography.Text>
+              <Typography.Text>{t(item.title)}</Typography.Text>
             </AntdLink>
           ) : (
             // Non-clickable item (no link)
             <Typography.Text
               style={{
-                color: themes.token?.colorText,
                 display: 'flex',
                 alignItems: 'center',
               }}

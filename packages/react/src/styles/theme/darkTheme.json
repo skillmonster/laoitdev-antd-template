@@ -13,7 +13,7 @@
     "borderRadius": 6,
     "colorIcon": "#FFFFFFA6",
     "colorBgBase": "#141414",
-    "colorBorder": "#dedede"
+    "colorBorder": "#4f4f4f"
   },
   "components": {
     "Layout": {

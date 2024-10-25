@@ -26,7 +26,7 @@
 }
 
 .login-background {
-  background-image: url('../../../assets/bg_login.jpg'); /* Make sure to adjust the path */
+  background-image: url('../../assets/bg_login.jpg'); /* Make sure to adjust the path */
   background-size: cover;
   resize: both;
   background-repeat: no-repeat;

@@ -39,7 +39,7 @@ export const LoginForm = ({ handleLogin }: Props) => {
     if (rememberedEmail) {
       form.setFieldsValue({ email: rememberedEmail });
     }
-  }, [form]); //
+  }, [form]); 
 
   return (
     <Row justify="space-around" align="middle" style={{ height: '100%' }}>

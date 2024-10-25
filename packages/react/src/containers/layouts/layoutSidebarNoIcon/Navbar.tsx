@@ -4,15 +4,16 @@ import {
   MenuUnfoldOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import TranslateOutlinedIcon from '@mui/icons-material/TranslateOutlined';
 import { useLocation } from '@tanstack/react-router';
-import { Avatar, Col, Layout, Menu, Row } from 'antd';
+import { Avatar, Col, Layout, Menu, Row, Image } from 'antd';
 import 'antd/dist/reset.css'; // Ant Design reset styles
 import { useUserProfile } from 'hooks/profile/useUserProfile';
 import React from 'react';
 import ProfileDropdown from '../admin/ProfileDropdown';
 import ThemeSwitcher from '../admin/ThemeSwitcher';
 import ChangeLanguage from '../ChangeLanguage';
+import LanguageIcon from 'assets/LanguageIcon.png';
+
 const { Header } = Layout;
 const { SubMenu } = Menu;
 
@@ -95,8 +96,11 @@ export const Navbar: React.FC<Props> = (props) => {
               {/* Change Language SubMenu */}
               <SubMenu
                 title={
-                  <TranslateOutlinedIcon
-                    sx={{ fontSize: '1.3rem', marginBottom: '-5px' }}
+                  <Image
+                    src={LanguageIcon}
+                    preview={false}
+                    height={18}
+                    style={{ marginBottom: '5px' }}
                   />
                 }
               >

@@ -18,11 +18,10 @@ import {
   Space,
   Tooltip,
   Typography,
-  Pagination,
 } from 'antd';
 import { useDialogContext } from 'hooks/DialogContext';
 import { formatDatetime } from 'hooks/Utils';
-import { Dispatch, useMemo, useEffect, useState } from 'react';
+import { Dispatch, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CreateDialogForm } from './CreateDialogForm';
 import { UpdateDialogForm } from './UpdateDialogForm';
@@ -56,7 +55,7 @@ export const Table = ({
 
   // State to store calculated table height based on window size
   const [tableHeight, setTableHeight] = useState<number>(
-    window.innerHeight - 300, // Deduct extra space for header, footer, and padding (for example: 300px)
+    window.innerHeight - 300,
   );
 
   // Function to dynamically calculate the table height based on viewport height
@@ -74,6 +73,7 @@ export const Table = ({
     return () => window.removeEventListener('resize', calculateTableHeight);
   }, []);
 
+  // Define table columns with fixed width for some columns
   const columns = useMemo(
     () => [
       {
@@ -94,24 +94,28 @@ export const Table = ({
             </Col>
           </Row>
         ),
+        width: 200, // Set a fixed width to the column
       },
       {
         title: t('email'),
         dataIndex: 'email',
         key: 'email',
-        render: (email: string) => email || 'N/A', // Render email
+        render: (email: string) => email || 'N/A',
+        width: 250, // Set a fixed width to the column
       },
       {
         title: t('phone'),
         dataIndex: 'phone',
         key: 'phone',
-        render: (phone: string) => phone || 'N/A', // Render phone
+        render: (phone: string) => phone || 'N/A',
+        width: 180, // Set a fixed width to the column
       },
       {
         title: t('roles'),
         dataIndex: 'role',
         key: 'roles',
-        render: (role: string) => role || 'N/A', // Render user roles
+        render: (role: string) => role || 'N/A',
+        width: 180, // Set a fixed width to the column
       },
       {
         title: t('last_update'),
@@ -129,11 +133,12 @@ export const Table = ({
             </Col>
           </Row>
         ),
+        width: 250, // Set fixed width for the last_update column
       },
       {
         title: t('action'),
         key: 'action',
-        width: 100,
+        width: 150, // Set a fixed width for the action buttons
         render: (row: UsersList) => (
           <Space size="small">
             <Tooltip placement="top" title={t('view')}>
@@ -161,10 +166,10 @@ export const Table = ({
   const handlePageChange = (page: number, pageSize: number) => {
     setPagination((prev) => ({
       ...prev,
-      pageIndex: page - 1, // Convert page number to index
+      pageIndex: page - 1,
       pageSize,
     }));
-    fetchNextPage(); // Trigger next page fetch
+    fetchNextPage(); // Trigger fetching the next page of data
   };
 
   return (
@@ -172,31 +177,23 @@ export const Table = ({
       {/* Main wrapper for content */}
       <div
         style={{
-          padding: '24px',
-          height: tableHeight - 10,
-          overflow: 'hidden',
+          padding: '0 16px 0 16px',
+          height: tableHeight + 10,
+          marginBottom: '20px',
         }}
       >
         <AntdTable
           columns={columns}
           dataSource={data}
           rowKey={(row: UsersList) => row.id}
-          pagination={false} // Disable internal pagination to move it externally
+          pagination={{
+            pageSize: pagination.pageSize,
+            total: data.length, // Provide total records for correct pagination display
+            onChange: handlePageChange,
+            current: pagination.pageIndex + 1,
+          }}
           loading={isLoading || isFetchingNextPage}
-          scroll={{ y: tableHeight - 65 }} // Adjust for height, leaving space for headers and pagination
-        />
-      </div>
-
-      {/* Pagination placed outside of the scrollable table */}
-      <div
-        style={{ padding: '16px', display: 'flex', justifyContent: 'flex-end' }}
-      >
-        <Pagination
-          current={pagination.pageIndex + 1}
-          pageSize={pagination.pageSize}
-          total={data.length} // Ensure total number of records is passed to display the correct number of pages
-          onChange={handlePageChange}
-          showSizeChanger
+          scroll={{ x: 'calc(700px + 50%)', y: tableHeight - 65 }}
         />
       </div>
 

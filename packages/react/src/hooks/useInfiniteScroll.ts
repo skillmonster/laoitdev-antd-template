@@ -1,6 +1,6 @@
 import { RefetchOptions } from '@tanstack/react-query'; // Import RefetchOptions for fetch control
-import { useCallback, useEffect } from 'react';          // Import hooks
-import { GroupBase, OptionsOrGroups } from 'react-select'; // react-select typings for auto-complete
+import { useCallback, useEffect, useState } from 'react'; // Hooks for behavior
+import { GroupBase, OptionsOrGroups } from 'react-select'; // react-select typing
 
 // Define the type for individual options in the dropdown
 interface OptionType {
@@ -10,10 +10,10 @@ interface OptionType {
 
 // Interface for the hook props
 interface InfiniteScrollProps {
-    fetchNextPage?: ((options?: RefetchOptions | undefined) => void) | null; // Function to fetch the next page
-    isLoading: boolean;                                                      // Indicates if data is currently being loaded
-    nextPageToken: string | undefined;                                       // Token for identifying the next page
-    optionValue?: OptionType[] | undefined;                                  // The current list of options
+    fetchNextPage?: ((options?: RefetchOptions | undefined) => void) | null;
+    isLoading: boolean;
+    nextPageToken: string | undefined; // Token for identifying the next page
+    optionValue?: OptionType[] | undefined; // The current list of options
 }
 
 // Custom hook for infinite scroll behavior
@@ -21,67 +21,63 @@ const useInfiniteScroll = ({
     fetchNextPage,
     isLoading,
     nextPageToken,
-    optionValue,
+    optionValue = [],
 }: InfiniteScrollProps) => {
-    // Check if there are more pages to load
-    const hasMore = !!nextPageToken;
+    const [options, setOptions] = useState<OptionType[]>(optionValue || []);  // State to store all loaded options
+    const hasMore = !!nextPageToken;  // Check if there's more data to fetch
 
-    // Function called to load more data (usually triggered when scrolling to the bottom)
+    // Trigger fetching more data when scrolling reaches the bottom
     const loadMoreData = useCallback(() => {
         if (!isLoading && hasMore && fetchNextPage) {
-            fetchNextPage();  // Fetch the next page if not loading and more data available
+            fetchNextPage(); // Fetch next page if more data is available
         }
     }, [isLoading, hasMore, fetchNextPage]);
 
-    // Function to fetch and filter options based on user search input (with pagination)
+    // Function to fetch options based on user search input with pagination
     const loadOptions = async (
-        search: string,  // The search input from the user
-        prevOptions: OptionsOrGroups<OptionType, GroupBase<OptionType>>  // Options already loaded
+        search: string,
+        prevOptions: OptionsOrGroups<OptionType, GroupBase<OptionType>>
     ) => {
-        // Simulate network delay to fetch/filter
-        await new Promise((resolve) => setTimeout(resolve, 500));
-
-        // Filter the current options based on the search string (case insensitive)
-        const filteredOptions = search
+        // Ensure we append to pre-existing filtered options
+        const filteredOptions: OptionType[] = search
             ? (optionValue ?? []).filter(({ label }) =>
                 label?.toString().toLowerCase().includes(search.toLowerCase())
             )
             : optionValue ?? [];
 
-        // If filtered options are empty and there's more data to load, try fetching additional pages
+        // Trigger fetching more data (pagination)
         if (filteredOptions.length === 0 && hasMore && fetchNextPage) {
-            // Trigger fetch for the next page
             await fetchNextPage();
-            // Return an empty array temporarily, pagination will handle any further changes.
-            return {
-                options: [],  // Return no options while waiting for new data
-                hasMore       // Indicate that loading may continue
-            };
         }
 
-        // Paginate options and load only the requested batch (e.g., 25 at a time)
+        // Paginate options
         const paginatedOptions = filteredOptions.slice(
             prevOptions.length,
-            prevOptions.length + 25
+            prevOptions.length + 50 // Let’s display 50 options at a time
         );
 
-        // Return the paginated options plus indication if more data is available
         return {
-            options: paginatedOptions,
-            hasMore: filteredOptions.length > prevOptions.length + 50  // Check if there's more to load
+            options: [...paginatedOptions], // Append paginated options to previous options
+            hasMore: !!nextPageToken // Keep fetching until no more data
         };
     };
 
-    // Automatically fetch the next page when no options are available yet
     useEffect(() => {
-        if (!isLoading && hasMore && fetchNextPage && (!optionValue || optionValue.length === 0)) {
-            fetchNextPage();  // Load data when the component initializes and there's no data yet
+        // Keep appending the newly fetched data to the already loaded options.
+        setOptions(optionValue || []);
+    }, [optionValue]);
+
+    useEffect(() => {
+        // Auto-fetch data during initial load if no data exists yet.
+        if (!isLoading && hasMore && fetchNextPage && options.length === 0) {
+            fetchNextPage();
         }
-    }, [isLoading, hasMore, fetchNextPage, optionValue]);
+    }, [isLoading, hasMore, fetchNextPage, options.length]);
 
     return {
-        loadOptions,  // Function to load options based on search & pagination
-        loadMoreData, // Function to trigger loading more data (usually triggered by scroll)
+        loadOptions,   // For loading options based on search input
+        loadMoreData,  // Call when user scrolls down to load more items
+        options,       // Provide combined list of options for component to use
     };
 };
 

@@ -2,7 +2,6 @@ import { useNavbarMenu } from '@/hooks/layouts/useNavbarMenu';
 import { useUserProfile } from '@/hooks/profile/useUserProfile';
 import { themes } from '@/styles/theme/themeConfig';
 import { MenuFoldOutlined, UserOutlined } from '@ant-design/icons'; // Updated: Now using "Menu" icon
-import TranslateOutlinedIcon from '@mui/icons-material/TranslateOutlined';
 import { Link } from '@tanstack/react-router';
 import {
   Menu as AntdMenu,
@@ -15,6 +14,7 @@ import {
   Row,
 } from 'antd';
 import 'antd/dist/reset.css'; // Ant Design reset styles
+import LanguageIcon from 'assets/LanguageIcon.png';
 import LogoDark from 'assets/LaoITDevLogoDark.png';
 import LogoLight from 'assets/LaoITDevLogoLight.png';
 import { t } from 'i18next';
@@ -113,8 +113,11 @@ export const Navbar: React.FC = () => {
               {/* Change Language SubMenu */}
               <SubMenu
                 title={
-                  <TranslateOutlinedIcon
-                    sx={{ fontSize: '1.3rem', marginBottom: '-5px' }}
+                  <Image
+                    src={LanguageIcon}
+                    preview={false}
+                    height={18}
+                    style={{ marginBottom: '5px' }}
                   />
                 }
               >
@@ -202,9 +205,11 @@ export const Navbar: React.FC = () => {
                   display: 'flex',
                   alignItems: 'right',
                   justifyContent: 'right',
+                  fontSize: '1.3rem',
+                  marginBottom: '-5px',
                 }}
               >
-                <TranslateOutlinedIcon sx={{ fontSize: '1.3rem' }} />
+                <LanguageIcon />
               </div>
             }
           >
