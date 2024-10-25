@@ -23,7 +23,7 @@ const NotificationContext = createContext<{
 });
 
 // Helper function to get icons based on alert type
-const getAntdIconForType = (type: Notifications['type']) => {
+export const getAntdIconForType = (type: Notifications['type']) => {
   switch (type) {
     case 'success':
       return <CheckCircleOutlined style={{ color: 'green' }} />;
@@ -36,7 +36,7 @@ const getAntdIconForType = (type: Notifications['type']) => {
   }
 };
 
-const useNotificationProvider: React.FC<{ children: React.ReactNode }> = ({
+const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [noti, setNoti] = useState<Notifications[]>([]); // Manage alert queue
@@ -44,8 +44,9 @@ const useNotificationProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Trigger notification whenever a new alert enters the queue
   useEffect(() => {
-    if (noti.length > 0) {
-      const alert = noti[0];
+    const alert = noti[0];
+
+    if (alert) {
       api.open({
         message: alert.message,
         description: alert.description,
@@ -59,7 +60,11 @@ const useNotificationProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Notification context function to add alert
   const addNoti = (notification: Notifications) => {
-    setNoti((prevNoti) => [...prevNoti, notification]);
+    console.log('=> Notification Triggered:', notification);
+    setNoti((prevNoti) => {
+      console.log('Previous noti state:', prevNoti); // Check the previous state
+      return [...prevNoti, notification];
+    });
   };
 
   // Function to remove the alert that's currently displayed
@@ -82,4 +87,4 @@ export const useNotificationStore = () => {
   return useContext(NotificationContext);
 };
 
-export default useNotificationProvider;
+export default NotificationProvider;

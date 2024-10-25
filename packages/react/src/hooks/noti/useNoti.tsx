@@ -32,7 +32,7 @@ const useNoti = () => {
     addNoti({
       type: 'error',
       message,
-      description: description || 'Something went wrong. Please try again.',
+      description,
     });
   };
 
