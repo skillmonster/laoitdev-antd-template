@@ -12,7 +12,9 @@ import React from 'react';
 import ProfileDropdown from '../admin/ProfileDropdown';
 import ThemeSwitcher from '../admin/ThemeSwitcher';
 import ChangeLanguage from '../ChangeLanguage';
-import LanguageIcon from 'assets/LanguageIcon.png';
+import LanguageIconLight from 'assets/LanguageIconLight.png';
+import LanguageIconDark from 'assets/LanguageIconDark.svg';
+import { useTheme } from '@/containers/layouts/admin/ThemeContext';
 
 const { Header } = Layout;
 const { SubMenu } = Menu;
@@ -25,6 +27,7 @@ interface Props {
 export const Navbar: React.FC<Props> = (props) => {
   const { pathname } = useLocation();
   const { userInfo } = useUserProfile();
+  const { isDark } = useTheme();
 
   return (
     <>
@@ -97,7 +100,7 @@ export const Navbar: React.FC<Props> = (props) => {
               <SubMenu
                 title={
                   <Image
-                    src={LanguageIcon}
+                    src={isDark ? LanguageIconDark : LanguageIconLight}
                     preview={false}
                     height={18}
                     style={{ marginBottom: '5px' }}

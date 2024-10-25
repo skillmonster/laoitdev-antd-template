@@ -14,7 +14,8 @@ import {
   Row,
 } from 'antd';
 import 'antd/dist/reset.css'; // Ant Design reset styles
-import LanguageIcon from 'assets/LanguageIcon.png';
+import LanguageIconLight from 'assets/LanguageIconLight.png';
+import LanguageIconDark from 'assets/LanguageIconDark.svg';
 import LogoDark from 'assets/LaoITDevLogoDark.png';
 import LogoLight from 'assets/LaoITDevLogoLight.png';
 import { t } from 'i18next';
@@ -114,7 +115,7 @@ export const Navbar: React.FC = () => {
               <SubMenu
                 title={
                   <Image
-                    src={LanguageIcon}
+                    src={isDark ? LanguageIconDark : LanguageIconLight}
                     preview={false}
                     height={18}
                     style={{ marginBottom: '5px' }}
@@ -209,7 +210,7 @@ export const Navbar: React.FC = () => {
                   marginBottom: '-5px',
                 }}
               >
-                <LanguageIcon />
+                {isDark ? <LanguageIconDark /> : <LanguageIconLight />}
               </div>
             }
           >

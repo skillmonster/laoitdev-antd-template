@@ -1,7 +1,11 @@
+import { notification } from 'antd';
 import { AxiosError } from 'axios';
 import { IError } from 'models/error';
 import { mapErrorToDescrition, mapErrorToMessage } from './error';
-import { useNotificationStore } from './useNotificationProvider';
+import {
+  getAntdIconForType,
+  useNotificationStore,
+} from './useNotificationProvider';
 import {
   translateErrorDescription,
   translateErrorMessage,
@@ -42,3 +46,20 @@ const useNoti = () => {
 
 // Export the custom hook
 export default useNoti;
+
+export const globalErrorHandler = (error: unknown) => {
+  const axiosError = error as AxiosError<IError>;
+
+  const message = translateErrorMessage(mapErrorToMessage(axiosError) || '');
+  const description = translateErrorDescription(
+    mapErrorToDescrition(axiosError) || '',
+  );
+
+  notification.open({
+    message: message,
+    description: description,
+    icon: getAntdIconForType('error'),
+    type: 'error',
+    duration: 4,
+  });
+};

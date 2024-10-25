@@ -1,4 +1,3 @@
-import useNoti from "hooks/noti/useNoti";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { PaginationType } from "models/table";
 import { IUsersListParam, IUsersListRes } from "models/users";
@@ -9,9 +8,6 @@ import { usersKeys } from ".";
 export const useUsers = () => {
   // State variables
   const [valueFilter, setValueFilter] = useState<IUsersListParam['queryParam'] | null>(null);
-
-  // Custom hooks
-  const { addErrorNoti } = useNoti();
 
   const defaultPagination = { pageIndex: 0, pageSize: 25 };
   const [pagination, setPagination] =
@@ -37,23 +33,16 @@ export const useUsers = () => {
       ...valueFilter
     }, pagination.pageSize, pagination.pageIndex),
 
-    queryFn: async ({ pageParam: nextPageToken }) => {
-      try {
-        return await getUserList({
-          queryParam: {
-            ...valueFilter
-          },
-          pagination: {
-            pageIndex: pagination.pageIndex,
-            pageSize: pagination.pageSize,
-            nextPageToken: nextPageToken as string,
-          },
-        });
-      } catch (error) {
-        addErrorNoti(error);
-        throw error;
-      }
-    },
+    queryFn: async ({ pageParam: nextPageToken }) => getUserList({
+      queryParam: {
+        ...valueFilter
+      },
+      pagination: {
+        pageIndex: pagination.pageIndex,
+        pageSize: pagination.pageSize * 2,
+        nextPageToken: nextPageToken as string,
+      },
+    }),
     staleTime: Infinity,
     initialPageParam: '',
     getNextPageParam: (lastPage) => {

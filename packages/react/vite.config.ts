@@ -48,6 +48,5 @@ export default defineConfig(({ mode
     esbuild: {
       drop: ['debugger'],
     },
-
   };
 });

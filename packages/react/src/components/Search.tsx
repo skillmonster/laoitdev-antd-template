@@ -64,7 +64,6 @@ export const Search = ({
         styles={{
           control: (provided) => ({
             ...provided,
-            borderColor: currentTheme?.token?.colorBorder,
             backgroundColor: currentTheme?.token?.colorBgContainer,
             boxShadow: 'none', // No focus shadow
             '&:hover': {
