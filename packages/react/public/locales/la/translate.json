@@ -11,6 +11,7 @@
   "please_input_email": "ກະລຸນາປ້ອນອີເມວ",
   "please_enter_valid_email": "ກະລຸນາປ້ອນອີເມວທີ່ຖືກຕ້ອງ",
   "login_successfully": "ເຂົ້າສູ່ລະບົບສຳເລັດແລ້ວ",
+  "successfully": "ສຳເລັດແລ້ວ",
   "welcome": "ສະບາຍດີ ຍິນດີຕ້ອນຮັບ",
   "failed_to_load_data": "ບໍ່ສາມາດໂຫຼດຂໍ້ມູນຈາກລະບົບ",
   "management": "ການຈັດການ",

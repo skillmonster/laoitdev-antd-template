@@ -11,6 +11,7 @@
   "please_enter_valid_email": "Please enter a valid email",
   "email": "Email",
   "login_successfully": "Login Successfully",
+  "successfully": "Successfully",
   "welcome": "Welcome",
   "failed_to_load_data": "Failed to load data from server",
   "management": "Management",

@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 
+import { IError } from '@/models/error';
 import { Notifications } from '@/models/noti';
 import {
   CheckCircleOutlined,
@@ -7,6 +8,8 @@ import {
   WarningOutlined,
 } from '@ant-design/icons';
 import { notification } from 'antd';
+import { AxiosError } from 'axios';
+import { t } from 'i18next';
 import React, {
   createContext,
   useContext,
@@ -14,6 +17,8 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+import { mapErrorToMessage, mapErrorToDescrition } from './error';
+import { translateErrorMessage, translateErrorDescription } from './useTranslateError';
 
 // Context initialization
 const NotificationContext = createContext<{
@@ -60,9 +65,7 @@ const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Notification context function to add alert
   const addNoti = (notification: Notifications) => {
-    console.log('=> Notification Triggered:', notification);
     setNoti((prevNoti) => {
-      console.log('Previous noti state:', prevNoti); // Check the previous state
       return [...prevNoti, notification];
     });
   };
@@ -90,3 +93,29 @@ export const useNotificationStore = () => {
 export default NotificationProvider;
 
 
+export const globalErrorHandler = (error: unknown) => {
+  const axiosError = error as AxiosError<IError>;
+
+  const message = translateErrorMessage(mapErrorToMessage(axiosError) || '');
+  const description = translateErrorDescription(
+    mapErrorToDescrition(axiosError) || '',
+  );
+
+  notification.open({
+    message: message,
+    description: description,
+    icon: getAntdIconForType('error'),
+    type: 'error',
+    duration: 4,
+  });
+};
+
+// Function to handle success notifications based on mutation key
+export const globalSuccessHandler = () => {
+  notification.open({
+    message: t('successfully'),
+    icon: getAntdIconForType('success'),
+    type: 'success',
+    duration: 4,
+  });
+};
