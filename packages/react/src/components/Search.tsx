@@ -62,16 +62,45 @@ export const Search = ({
         }
         noOptionsMessage={() => t('No more results')}
         styles={{
-          control: (base) => ({
-            ...base,
-            backgroundColor: currentTheme.token.colorBgContainer,
+          control: (provided) => ({
+            ...provided,
+            borderColor: currentTheme?.token?.colorBorder,
+            backgroundColor: currentTheme?.token?.colorBgContainer,
+            boxShadow: 'none', // No focus shadow
+            '&:hover': {
+              borderColor: currentTheme?.token?.colorPrimary, // Hover styles
+            },
           }),
-          option: (base, state) => ({
-            ...base,
-            backgroundColor: state.isFocused
-              ? `${currentTheme.token.colorPrimary}20`
-              : undefined,
-            color: currentTheme.token.colorText,
+          menu: (provided) => ({
+            ...provided,
+            backgroundColor: currentTheme?.token?.colorBgContainer,
+          }),
+          option: (provided, state) => ({
+            ...provided,
+            backgroundColor: state.isSelected
+              ? currentTheme?.token?.colorPrimary
+              : state.isFocused
+                ? `${currentTheme?.token?.colorPrimary}20` // Add lightened color on focus
+                : currentTheme?.token?.colorBgContainer,
+            color: state.isSelected
+              ? currentTheme?.token?.colorText
+              : currentTheme?.token?.colorText,
+            '&:active': {
+              backgroundColor:
+                currentTheme?.components?.Button?.colorPrimaryActive,
+            },
+          }),
+          placeholder: (provided) => ({
+            ...provided,
+            color: currentTheme?.token?.colorText,
+          }),
+          singleValue: (provided) => ({
+            ...provided,
+            color: currentTheme?.token?.colorText,
+          }),
+          input: (provided) => ({
+            ...provided,
+            color: currentTheme?.token?.colorText,
           }),
         }}
       />

@@ -45,7 +45,7 @@ export const useUsers = () => {
           },
           pagination: {
             pageIndex: pagination.pageIndex,
-            pageSize: pagination.pageSize * 2,
+            pageSize: pagination.pageSize,
             nextPageToken: nextPageToken as string,
           },
         });
