@@ -1,3 +1,4 @@
+import { TableAntd } from '@/components/Table';
 import { PaginationType } from '@/models/table';
 import { IUsersListRes, UsersList, user } from '@/models/users';
 import { localStorageToken } from '@/services/cache';
@@ -9,7 +10,6 @@ import {
 } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import {
-  Table as AntdTable,
   Avatar,
   Button,
   Col,
@@ -21,7 +21,7 @@ import {
 } from 'antd';
 import { useDialogContext } from 'hooks/DialogContext';
 import { formatDatetime } from 'hooks/Utils';
-import { Dispatch, useEffect, useMemo, useState } from 'react';
+import { Dispatch, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CreateDialogForm } from './CreateDialogForm';
 import { UpdateDialogForm } from './UpdateDialogForm';
@@ -52,26 +52,6 @@ export const Table = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { openDialog } = useDialogContext(); // Get openDialog from context
-
-  // State to store calculated table height based on window size
-  const [tableHeight, setTableHeight] = useState<number>(
-    window.innerHeight - 300,
-  );
-
-  // Function to dynamically calculate the table height based on viewport height
-  const calculateTableHeight = () => {
-    const newHeight = window.innerHeight - 300; // Adjust based on actual header/footer height
-    setTableHeight(newHeight > 300 ? newHeight : 300); // Set a minimum height to prevent the table from being too small
-  };
-
-  // Resize listener to adjust the table height dynamically when window is resized
-  useEffect(() => {
-    calculateTableHeight(); // Set initial height on component mount
-
-    window.addEventListener('resize', calculateTableHeight);
-
-    return () => window.removeEventListener('resize', calculateTableHeight);
-  }, []);
 
   // Define table columns with fixed width for some columns
   const columns = useMemo(
@@ -162,40 +142,18 @@ export const Table = ({
     [navigate, openDialog, t],
   );
 
-  // Handle Ant Design Table pagination options
-  const handlePageChange = (page: number, pageSize: number) => {
-    setPagination((prev) => ({
-      ...prev,
-      pageIndex: page - 1,
-      pageSize,
-    }));
-    fetchNextPage(); // Trigger fetching the next page of data
-  };
-
   return (
     <>
       {/* Main wrapper for content */}
-      <div
-        style={{
-          padding: '0 16px 0 16px',
-          height: tableHeight + 10,
-          marginBottom: '20px',
-        }}
-      >
-        <AntdTable
-          columns={columns}
-          dataSource={data}
-          rowKey={(row: UsersList) => row.id}
-          pagination={{
-            pageSize: pagination.pageSize,
-            total: data.length, // Provide total records for correct pagination display
-            onChange: handlePageChange,
-            current: pagination.pageIndex + 1,
-          }}
-          loading={isLoading || isFetchingNextPage}
-          scroll={{ x: 'calc(700px + 50%)', y: tableHeight - 65 }}
-        />
-      </div>
+      <TableAntd<UsersList>
+        columns={columns}
+        data={data}
+        pagination={pagination}
+        setPagination={setPagination}
+        fetchNextPage={fetchNextPage}
+        isLoading={isLoading}
+        isFetchingNextPage={isFetchingNextPage}
+      />
 
       {/* Render dialog forms */}
       <CreateDialogForm />
