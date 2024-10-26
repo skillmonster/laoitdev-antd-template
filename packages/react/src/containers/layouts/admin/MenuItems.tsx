@@ -1,5 +1,16 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { DashboardOutlined, SettingOutlined } from '@ant-design/icons';
+import {
+  DashboardOutlined,
+  UsergroupAddOutlined,
+  ApartmentOutlined,
+  StarOutlined,
+  LikeOutlined,
+  ProjectOutlined,
+  ClockCircleOutlined,
+  MailOutlined,
+  FileTextOutlined,
+  SettingOutlined,
+} from '@ant-design/icons';
 import { Link } from '@tanstack/react-router';
 import { Menu } from 'antd';
 import { ReactNode } from 'react';
@@ -10,7 +21,7 @@ const { SubMenu } = Menu;
 interface MenuItem {
   key: string;
   label: string;
-  icon: ReactNode;
+  icon?: ReactNode;
   path?: string;
   children?: MenuItem[];
 }
@@ -24,6 +35,78 @@ export const menuItems: MenuItem[] = [
     path: '/dashboard',
   },
   {
+    key: '/employee',
+    label: 'employee',
+    icon: <UsergroupAddOutlined />,
+    path: '/employee',
+  },
+  {
+    key: '/department',
+    label: 'department',
+    icon: <ApartmentOutlined />,
+    path: '/department',
+  },
+  {
+    key: '/role-permission',
+    label: 'role_permission',
+    icon: <StarOutlined />,
+    path: '/role-permission',
+  },
+  {
+    key: 'position',
+    label: 'position',
+    icon: <LikeOutlined />,
+    path: '',
+    children: [
+      {
+        key: '/position-list',
+        label: 'position_list',
+        path: '/position-list',
+      },
+      {
+        key: '/payroll-type',
+        label: 'payroll_type',
+        path: '/payroll-type',
+      },
+    ],
+  },
+  {
+    key: '/project',
+    label: 'project',
+    icon: <ProjectOutlined />,
+    path: '/project',
+  },
+  {
+    key: 'checkin-out',
+    label: 'checkin_out',
+    icon: <ClockCircleOutlined />,
+    path: '',
+    children: [
+      {
+        key: '/checkin-out',
+        label: 'checkin_out',
+        path: '/checkin-out',
+      },
+      {
+        key: '/checkin-out-setting',
+        label: 'checkin_out_setting',
+        path: '/checkin-out-setting',
+      },
+    ],
+  },
+  {
+    key: '/leave',
+    label: 'leave',
+    icon: <MailOutlined />,
+    path: '/leave',
+  },
+  {
+    key: '/recruiting',
+    label: 'recruiting',
+    icon: <FileTextOutlined />,
+    path: '/recruiting',
+  },
+  {
     key: 'management',
     label: 'management',
     icon: <SettingOutlined />,
@@ -32,7 +115,6 @@ export const menuItems: MenuItem[] = [
       {
         key: '/users',
         label: 'users',
-        icon: null,
         path: '/users',
       },
     ],
