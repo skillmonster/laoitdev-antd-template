@@ -17,7 +17,8 @@ import { Route as AdminIndexImport } from './routes/_admin/index'
 import { Route as AdminProfileIndexImport } from './routes/_admin/profile/index'
 import { Route as AdminDashboardIndexImport } from './routes/_admin/dashboard/index'
 import { Route as AdminManagementUsersIndexImport } from './routes/_admin/(Management)/users/index'
-import { Route as AdminManagementUsersViewIdImport } from './routes/_admin/(Management)/users/view.$id'
+import { Route as AdminManagementUsersIdViewImport } from './routes/_admin/(Management)/users/$id/view'
+import { Route as AdminManagementUsersIdEditImport } from './routes/_admin/(Management)/users/$id/edit'
 
 // Create/Update Routes
 
@@ -51,9 +52,16 @@ const AdminManagementUsersIndexRoute = AdminManagementUsersIndexImport.update({
   getParentRoute: () => AdminRoute,
 } as any)
 
-const AdminManagementUsersViewIdRoute = AdminManagementUsersViewIdImport.update(
+const AdminManagementUsersIdViewRoute = AdminManagementUsersIdViewImport.update(
   {
-    path: '/users/view/$id',
+    path: '/users/$id/view',
+    getParentRoute: () => AdminRoute,
+  } as any,
+)
+
+const AdminManagementUsersIdEditRoute = AdminManagementUsersIdEditImport.update(
+  {
+    path: '/users/$id/edit',
     getParentRoute: () => AdminRoute,
   } as any,
 )
@@ -104,11 +112,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminManagementUsersIndexImport
       parentRoute: typeof AdminImport
     }
-    '/_admin/(Management)/users/view/$id': {
-      id: '/_admin/users/view/$id'
-      path: '/users/view/$id'
-      fullPath: '/users/view/$id'
-      preLoaderRoute: typeof AdminManagementUsersViewIdImport
+    '/_admin/(Management)/users/$id/edit': {
+      id: '/_admin/users/$id/edit'
+      path: '/users/$id/edit'
+      fullPath: '/users/$id/edit'
+      preLoaderRoute: typeof AdminManagementUsersIdEditImport
+      parentRoute: typeof AdminImport
+    }
+    '/_admin/(Management)/users/$id/view': {
+      id: '/_admin/users/$id/view'
+      path: '/users/$id/view'
+      fullPath: '/users/$id/view'
+      preLoaderRoute: typeof AdminManagementUsersIdViewImport
       parentRoute: typeof AdminImport
     }
   }
@@ -121,7 +136,8 @@ interface AdminRouteChildren {
   AdminDashboardIndexRoute: typeof AdminDashboardIndexRoute
   AdminProfileIndexRoute: typeof AdminProfileIndexRoute
   AdminManagementUsersIndexRoute: typeof AdminManagementUsersIndexRoute
-  AdminManagementUsersViewIdRoute: typeof AdminManagementUsersViewIdRoute
+  AdminManagementUsersIdEditRoute: typeof AdminManagementUsersIdEditRoute
+  AdminManagementUsersIdViewRoute: typeof AdminManagementUsersIdViewRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
@@ -129,7 +145,8 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminDashboardIndexRoute: AdminDashboardIndexRoute,
   AdminProfileIndexRoute: AdminProfileIndexRoute,
   AdminManagementUsersIndexRoute: AdminManagementUsersIndexRoute,
-  AdminManagementUsersViewIdRoute: AdminManagementUsersViewIdRoute,
+  AdminManagementUsersIdEditRoute: AdminManagementUsersIdEditRoute,
+  AdminManagementUsersIdViewRoute: AdminManagementUsersIdViewRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
@@ -141,7 +158,8 @@ interface FileRoutesByFullPath {
   '/dashboard': typeof AdminDashboardIndexRoute
   '/profile': typeof AdminProfileIndexRoute
   '/users': typeof AdminManagementUsersIndexRoute
-  '/users/view/$id': typeof AdminManagementUsersViewIdRoute
+  '/users/$id/edit': typeof AdminManagementUsersIdEditRoute
+  '/users/$id/view': typeof AdminManagementUsersIdViewRoute
 }
 
 interface FileRoutesByTo {
@@ -150,7 +168,8 @@ interface FileRoutesByTo {
   '/dashboard': typeof AdminDashboardIndexRoute
   '/profile': typeof AdminProfileIndexRoute
   '/users': typeof AdminManagementUsersIndexRoute
-  '/users/view/$id': typeof AdminManagementUsersViewIdRoute
+  '/users/$id/edit': typeof AdminManagementUsersIdEditRoute
+  '/users/$id/view': typeof AdminManagementUsersIdViewRoute
 }
 
 interface FileRoutesById {
@@ -160,7 +179,8 @@ interface FileRoutesById {
   '/_admin/dashboard/': typeof AdminDashboardIndexRoute
   '/_admin/profile/': typeof AdminProfileIndexRoute
   '/_admin/users/': typeof AdminManagementUsersIndexRoute
-  '/_admin/users/view/$id': typeof AdminManagementUsersViewIdRoute
+  '/_admin/users/$id/edit': typeof AdminManagementUsersIdEditRoute
+  '/_admin/users/$id/view': typeof AdminManagementUsersIdViewRoute
 }
 
 interface FileRouteTypes {
@@ -172,9 +192,17 @@ interface FileRouteTypes {
     | '/dashboard'
     | '/profile'
     | '/users'
-    | '/users/view/$id'
+    | '/users/$id/edit'
+    | '/users/$id/view'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/' | '/dashboard' | '/profile' | '/users' | '/users/view/$id'
+  to:
+    | '/login'
+    | '/'
+    | '/dashboard'
+    | '/profile'
+    | '/users'
+    | '/users/$id/edit'
+    | '/users/$id/view'
   id:
     | '/_admin'
     | '/login'
@@ -182,7 +210,8 @@ interface FileRouteTypes {
     | '/_admin/dashboard/'
     | '/_admin/profile/'
     | '/_admin/users/'
-    | '/_admin/users/view/$id'
+    | '/_admin/users/$id/edit'
+    | '/_admin/users/$id/view'
   fileRoutesById: FileRoutesById
 }
 
@@ -219,7 +248,8 @@ export const routeTree = rootRoute
         "/_admin/dashboard/",
         "/_admin/profile/",
         "/_admin/users/",
-        "/_admin/users/view/$id"
+        "/_admin/users/$id/edit",
+        "/_admin/users/$id/view"
       ]
     },
     "/login": {
@@ -241,8 +271,12 @@ export const routeTree = rootRoute
       "filePath": "_admin/(Management)/users/index.tsx",
       "parent": "/_admin"
     },
-    "/_admin/users/view/$id": {
-      "filePath": "_admin/(Management)/users/view.$id.tsx",
+    "/_admin/users/$id/edit": {
+      "filePath": "_admin/(Management)/users/$id/edit.tsx",
+      "parent": "/_admin"
+    },
+    "/_admin/users/$id/view": {
+      "filePath": "_admin/(Management)/users/$id/view.tsx",
       "parent": "/_admin"
     }
   }

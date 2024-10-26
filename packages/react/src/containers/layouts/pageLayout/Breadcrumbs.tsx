@@ -1,58 +1,61 @@
-import { Link as AntdLink } from '@tanstack/react-router';
-import { Breadcrumb, Typography } from 'antd'; // Ant Design Components
-import { BreadcrumbsProps } from 'models/breadcrumb';
+import { Breadcrumb, Typography, theme } from 'antd';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { themes } from '@/styles/theme/themeConfig';
+import { Link as AntdLink } from '@tanstack/react-router'; // Assuming this is a custom Link component from TanStack router.
+import { BreadcrumbsProps } from 'models/breadcrumb';
 
-const Breadcrumbs = ({ items }: BreadcrumbsProps) => {
+const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items }) => {
   const { t } = useTranslation();
+  const { token } = theme.useToken(); // Using Ant Design's token for theme
+
+  // Map breadcrumb items to the structure Babylon expects
+  const breadcrumbItems = items?.map((item) => {
+    if (item?.link) {
+      return {
+        title: (
+          <AntdLink
+            to={item.link}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              color: token.colorText,
+            }}
+          >
+            {item.icon &&
+              React.cloneElement(item.icon, {
+                style: { fontSize: 'small', marginRight: 8 },
+              })}
+            <Typography.Text>{t(item.title)}</Typography.Text>
+          </AntdLink>
+        ),
+      };
+    } else {
+      return {
+        title: (
+          <Typography.Text
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              color: token.colorText,
+            }}
+          >
+            {item.icon &&
+              React.cloneElement(item.icon, {
+                style: { fontSize: 'small', marginRight: 8 },
+              })}
+            {t(item.title)}
+          </Typography.Text>
+        ),
+      };
+    }
+  });
 
   return (
     <Breadcrumb
-      style={{
-        margin: '-12px 0 14px 0',
-        color: themes.token?.colorText, // Custom styling from theme setting if preferred
-      }}
-      separator={<span> / </span>} // Slash separator
-    >
-      {items?.map((item, index) => (
-        <Breadcrumb.Item key={index}>
-          {/* If the breadcrumb item is clickable (has link), render with <AntdLink> */}
-          {item?.link ? (
-            <AntdLink
-              to={item.link}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              {item?.icon &&
-                React.cloneElement(item?.icon, {
-                  style: { fontSize: 'small', marginRight: 8 },
-                })}
-
-              {/* Render translated title */}
-              <Typography.Text>{t(item.title)}</Typography.Text>
-            </AntdLink>
-          ) : (
-            // Non-clickable item (no link)
-            <Typography.Text
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              {item?.icon &&
-                React.cloneElement(item?.icon, {
-                  style: { fontSize: 'small', marginRight: 8 },
-                })}
-              {t(item.title)}
-            </Typography.Text>
-          )}
-        </Breadcrumb.Item>
-      ))}
-    </Breadcrumb>
+      style={{ margin: '-12px 0 14px 0' }}
+      separator={<span> / </span>} // Custom slash separator
+      items={breadcrumbItems} // Pass our transformed breadcrumb items
+    />
   );
 };
 

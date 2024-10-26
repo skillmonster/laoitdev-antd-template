@@ -24,6 +24,7 @@ const Login: React.FC = () => {
         <Col>
           <Menu mode="vertical" className="menu custom-menu">
             <SubMenu
+              key="sub1"
               title={
                 <Image
                   src={isDark ? LanguageIconDark : LanguageIconLight}

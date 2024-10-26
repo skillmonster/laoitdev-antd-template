@@ -113,6 +113,7 @@ export const Navbar: React.FC = () => {
 
               {/* Change Language SubMenu */}
               <SubMenu
+                key="change_language"
                 title={
                   <Image
                     src={isDark ? LanguageIconDark : LanguageIconLight}

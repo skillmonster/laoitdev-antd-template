@@ -3,9 +3,10 @@ import React, { createContext, useCallback, useContext, useState } from 'react';
 
 // Define the context type
 interface DialogContextType {
-  openDialog: (key: string) => void;
+  openDialog: (key: string, id: string) => void; // Modified to accept `id`
   closeDialog: () => void;
   isOpen: (key: string) => boolean;
+  dialogId: string | null; // Expose the `id` associated with the open dialog
 }
 
 // Create the context
@@ -25,15 +26,18 @@ export const DialogProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [currentDialogKey, setCurrentDialogKey] = useState<string | null>(null);
+  const [dialogId, setDialogId] = useState<string | null>(null); // State to hold the current `id`
 
-  // Open dialog by key
-  const openDialog = useCallback((key: string) => {
+  // Open dialog by key and id
+  const openDialog = useCallback((key: string, id: string) => {
     setCurrentDialogKey(key);
+    setDialogId(id);
   }, []);
 
-  // Close dialog
+  // Close dialog and reset id
   const closeDialog = useCallback(() => {
     setCurrentDialogKey(null);
+    setDialogId(null); // Reset the `id` when dialog is closed
   }, []);
 
   // Check if a dialog key is currently open
@@ -43,7 +47,9 @@ export const DialogProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 
   return (
-    <DialogContext.Provider value={{ openDialog, closeDialog, isOpen }}>
+    <DialogContext.Provider
+      value={{ openDialog, closeDialog, isOpen, dialogId }}
+    >
       {children}
     </DialogContext.Provider>
   );

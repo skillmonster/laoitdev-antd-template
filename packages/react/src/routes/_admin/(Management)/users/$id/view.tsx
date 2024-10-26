@@ -4,7 +4,7 @@ import PageLayout from 'containers/layouts/pageLayout/PageLayout';
 import { useUserDetails } from 'hooks/users/useUserDetails';
 import { ViewDetails } from 'containers/Management/Users/ViewDetails';
 
-export const Route = createFileRoute('/_admin/(Management)/users/view/$id')({
+export const Route = createFileRoute('/_admin/(Management)/users/$id/view')({
   component: () => <View />,
 });
 
@@ -12,7 +12,7 @@ const View: React.FC = () => {
   const breadcrumbs = [
     { title: 'management' },
     { title: 'user_management', link: '/users' },
-    { title: 'view', link: '/users/view/$id' },
+    { title: 'view', link: '/users/$id/view' },
   ];
 
   const { userDetail, isLoading } = useUserDetails(Route.useParams().id);

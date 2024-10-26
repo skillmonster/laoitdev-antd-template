@@ -19,12 +19,9 @@ import {
   Tooltip,
   Typography,
 } from 'antd';
-import { useDialogContext } from 'hooks/DialogContext';
 import { formatDatetime } from 'hooks/Utils';
 import { Dispatch, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CreateDialogForm } from './CreateDialogForm';
-import { UpdateDialogForm } from './UpdateDialogForm';
 
 interface TableProps {
   data: UsersList[];
@@ -51,7 +48,6 @@ export const Table = ({
 }: TableProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { openDialog } = useDialogContext(); // Get openDialog from context
 
   // Define table columns with fixed width for some columns
   const columns = useMemo(
@@ -125,21 +121,23 @@ export const Table = ({
               <Button
                 type="primary"
                 icon={<EyeOutlined />}
-                onClick={() => navigate({ to: `/users/view/${row.id}` })}
+                onClick={() => navigate({ to: `/users/${row.id}/view` })}
               />
             </Tooltip>
             <Tooltip placement="top" title={t('edit')}>
               <Button
                 type="primary"
                 icon={<EditOutlined />}
-                onClick={() => openDialog('edit')}
+                onClick={() => {
+                  navigate({ to: `/users/${row.id}/edit` });
+                }}
               />
             </Tooltip>
           </Space>
         ),
       },
     ],
-    [navigate, openDialog, t],
+    [navigate, t],
   );
 
   return (
@@ -154,10 +152,6 @@ export const Table = ({
         isLoading={isLoading}
         isFetchingNextPage={isFetchingNextPage}
       />
-
-      {/* Render dialog forms */}
-      <CreateDialogForm />
-      <UpdateDialogForm />
     </>
   );
 };
