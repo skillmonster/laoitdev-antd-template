@@ -1,6 +1,6 @@
 import { useNavbarMenu } from '@/hooks/layouts/useNavbarMenu';
 import { useUserProfile } from '@/hooks/profile/useUserProfile';
-import { themes } from '@/styles/theme/themeConfig';
+import { darkTheme, themes } from '@/styles/theme/themeConfig';
 import {
   DownOutlined,
   MenuFoldOutlined,
@@ -15,7 +15,7 @@ import {
   Col,
   Drawer,
   Layout,
-  Row
+  Row,
 } from 'antd';
 import 'antd/dist/reset.css'; // Ant Design reset styles
 import LanguageIconDark from 'assets/LanguageIconDark.svg';
@@ -54,7 +54,6 @@ export const Navbar: React.FC = () => {
     visibleMenuItems,
     overflowMenuItems,
   } = useNavbarMenu();
-
 
   return (
     <>
@@ -183,6 +182,11 @@ export const Navbar: React.FC = () => {
         placement="right"
         onClose={closeDrawer}
         open={drawerVisible}
+        style={{
+          backgroundColor: isDark
+            ? darkTheme.token?.colorBgBase
+            : themes.token?.colorBgBase,
+        }}
       >
         <AntdMenu
           mode="inline"
@@ -192,7 +196,9 @@ export const Navbar: React.FC = () => {
             overflowY: 'auto',
             height: '100%',
             borderRight: 'none',
-            backgroundColor: themes.token?.colorBgBase,
+            backgroundColor: isDark
+              ? darkTheme.token?.colorBgBase
+              : themes.token?.colorBgBase,
           }}
         >
           {/* Render Menu Items inside Drawer (close after each selection) */}
@@ -229,12 +235,20 @@ export const Navbar: React.FC = () => {
           <SubMenu
             key="change_language_submenu_mobile"
             title={
-              <AntImage
-                src={isDark ? LanguageIconDark : LanguageIconLight}
-                preview={false}
-                height={18}
-                style={{ marginBottom: '5px' }}
-              />
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'right',
+                  justifyContent: 'right',
+                }}
+              >
+                <AntImage
+                  src={isDark ? LanguageIconDark : LanguageIconLight}
+                  preview={false}
+                  height={18}
+                  style={{ marginBottom: '30px' }}
+                />
+              </div>
             }
           >
             <ChangeLanguage />
@@ -256,7 +270,7 @@ export const Navbar: React.FC = () => {
 
       {/* Media Queries for Mobile */}
       <style>{`
-        @media (max-width: 768px) {
+        @media (max-width: 767px) {
           .desktop-menu {
             display: none; /* Hide desktop menu on smaller screens */
           }
@@ -265,7 +279,7 @@ export const Navbar: React.FC = () => {
           }
         }
 
-        @media (min-width: 769px) {
+        @media (min-width: 768px) {
           .mobile-menu-button {
             display: none; /* Hide icon on desktop screens */
           }
