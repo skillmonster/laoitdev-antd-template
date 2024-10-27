@@ -10,7 +10,6 @@ import { I18nextProvider } from 'react-i18next';
 import 'styles/css/App.css';
 import { queryClient } from './config/react-query/client';
 import { router } from './router';
-import { DialogProvider } from 'hooks/DialogContext';
 
 function App() {
   return (
@@ -19,9 +18,7 @@ function App() {
         <ThemeModeProvider>
           <I18nextProvider i18n={i18n}>
             <NotificationProvider>
-              <DialogProvider>
-                <RouterProvider router={router} />
-              </DialogProvider>
+              <RouterProvider router={router} />
             </NotificationProvider>
           </I18nextProvider>
         </ThemeModeProvider>
