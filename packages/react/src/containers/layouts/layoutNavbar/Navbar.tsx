@@ -1,21 +1,25 @@
 import { useNavbarMenu } from '@/hooks/layouts/useNavbarMenu';
 import { useUserProfile } from '@/hooks/profile/useUserProfile';
 import { themes } from '@/styles/theme/themeConfig';
-import { MenuFoldOutlined, UserOutlined } from '@ant-design/icons'; // Updated: Now using "Menu" icon
+import {
+  DownOutlined,
+  MenuFoldOutlined,
+  UserOutlined,
+} from '@ant-design/icons'; // Added DownOutlined for 'More' dropdown
 import { Link } from '@tanstack/react-router';
 import {
   Menu as AntdMenu,
+  Image as AntImage,
   Avatar,
   Button,
   Col,
   Drawer,
-  Image,
   Layout,
-  Row,
+  Row
 } from 'antd';
 import 'antd/dist/reset.css'; // Ant Design reset styles
-import LanguageIconLight from 'assets/LanguageIconLight.png';
 import LanguageIconDark from 'assets/LanguageIconDark.svg';
+import LanguageIconLight from 'assets/LanguageIconLight.png';
 import LogoDark from 'assets/LaoITDevLogoDark.png';
 import LogoLight from 'assets/LaoITDevLogoLight.png';
 import { t } from 'i18next';
@@ -23,8 +27,8 @@ import React from 'react';
 import ChangeLanguage from '../ChangeLanguage';
 import {
   menuItems,
-  renderMenuItems,
-  renderMenuItemsWithClose,
+  renderMenuItems, // Assumes you'll modify this to accept slicing params
+  renderMenuItemsWithClose, // For mobile / drawer view
 } from '../admin/MenuItems';
 import ProfileDropdown from '../admin/ProfileDropdown';
 import { useTheme } from '../admin/ThemeContext';
@@ -32,6 +36,9 @@ import ThemeSwitcher from '../admin/ThemeSwitcher';
 
 const { Header } = Layout;
 const { SubMenu } = AntdMenu;
+
+// Set the maximum number of top-level menu items to show
+const MAX_VISIBLE_MENU_ITEMS = 8; // Modify this value to set the visible limit
 
 export const Navbar: React.FC = () => {
   const { userInfo } = useUserProfile();
@@ -47,6 +54,10 @@ export const Navbar: React.FC = () => {
     pathname,
   } = useNavbarMenu();
 
+  // Split visible menu items and remaining overflow items
+  const visibleMenuItems = menuItems.slice(0, MAX_VISIBLE_MENU_ITEMS);
+  const overflowMenuItems = menuItems.slice(MAX_VISIBLE_MENU_ITEMS);
+
   return (
     <>
       <Header
@@ -59,11 +70,16 @@ export const Navbar: React.FC = () => {
           boxShadow: '0 1px 1px rgba(0, 0, 0, 0.1)',
         }}
       >
-        <Row justify="space-between">
+        <Row
+          justify="space-between"
+          align="middle"
+          wrap={false}
+          gutter={[16, 0]}
+        >
           {/* Left Section: App Logo */}
           <Col>
             <Link to="/">
-              <Image
+              <AntImage
                 src={isDark ? LogoLight : LogoDark}
                 preview={false}
                 height={50}
@@ -75,9 +91,6 @@ export const Navbar: React.FC = () => {
             </Link>
           </Col>
 
-          <div style={{ marginLeft: '30px' }} />
-
-          {/* Full Desktop Menu */}
           <Col flex="auto" className="desktop-menu">
             <AntdMenu
               mode="horizontal"
@@ -86,8 +99,23 @@ export const Navbar: React.FC = () => {
                 borderRight: 'none', // Remove the right border (default Antd style)
               }}
             >
-              {/* Render Menu Items (Dropdowns) */}
-              {renderMenuItems(menuItems)}
+              {/* Render Visible Menu Items */}
+              {renderMenuItems(visibleMenuItems)}
+
+              {/* If there are overflow items, show them in a "More" dropdown */}
+              {overflowMenuItems.length > 0 && (
+                <SubMenu
+                  key="more"
+                  title={
+                    <>
+                      <span style={{ fontSize: '15px' }}>{t('more')}</span>
+                      <DownOutlined style={{ marginLeft: '4px' }} />
+                    </>
+                  }
+                >
+                  {renderMenuItems(overflowMenuItems)}
+                </SubMenu>
+              )}
 
               {/* Profile SubMenu */}
               <SubMenu
@@ -115,7 +143,7 @@ export const Navbar: React.FC = () => {
               <SubMenu
                 key="change_language"
                 title={
-                  <Image
+                  <AntImage
                     src={isDark ? LanguageIconDark : LanguageIconLight}
                     preview={false}
                     height={18}
@@ -155,23 +183,24 @@ export const Navbar: React.FC = () => {
       <Drawer
         title={t('menu')}
         placement="right"
-        onClose={closeDrawer} // Close the drawer when closing manually
-        open={drawerVisible} // Visibility controlled by state
+        onClose={closeDrawer}
+        open={drawerVisible}
       >
         <AntdMenu
-          mode="inline" // Set the mobile menu to "inline" for collapsible submenus
+          mode="inline"
           defaultSelectedKeys={[pathname]}
           style={{
             paddingBottom: 10,
-            overflowY: 'auto', // Allows the drawer content to scroll
-            height: '100%', // Full mobile height
+            overflowY: 'auto',
+            height: '100%',
             borderRight: 'none',
+            backgroundColor: themes.token?.colorBgBase,
           }}
         >
-          {/* Render Menu Items inside Drawer with auto-close functionality */}
+          {/* Render Menu Items inside Drawer (close after each selection) */}
           {renderMenuItemsWithClose(menuItems)}
 
-          {/* Collapsible Profile SubMenu for Mobile */}
+          {/* Profile for Mobile */}
           <SubMenu
             key="profile_sub_menu_mobile"
             title={
@@ -198,27 +227,22 @@ export const Navbar: React.FC = () => {
             <ProfileDropdown />
           </SubMenu>
 
-          {/* Collapsible Change Language SubMenu for Mobile */}
+          {/* Change Language Menu */}
           <SubMenu
             key="change_language_submenu_mobile"
             title={
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'right',
-                  justifyContent: 'right',
-                  fontSize: '1.3rem',
-                  marginBottom: '-5px',
-                }}
-              >
-                {isDark ? <LanguageIconDark /> : <LanguageIconLight />}
-              </div>
+              <AntImage
+                src={isDark ? LanguageIconDark : LanguageIconLight}
+                preview={false}
+                height={18}
+                style={{ marginBottom: '5px' }}
+              />
             }
           >
             <ChangeLanguage />
           </SubMenu>
 
-          {/* Theme Switcher Menu Item inside Mobile Drawer */}
+          {/* Theme Switcher for Mobile */}
           <AntdMenu.Item
             key="theme_switcher_mobile"
             style={{

@@ -1,4 +1,4 @@
-import { globalErrorHandler, globalSuccessHandler } from '@/hooks/noti/useNotificationProvider';
+import { globalErrorHandler } from '@/hooks/noti/useNotificationProvider';
 import { QueryClient } from '@tanstack/react-query';
 
 // Modify Client to initialize queryClient
@@ -17,11 +17,6 @@ const createQueryClient = () => {
         },
       },
       mutations: {
-        onMutate: (data) => {
-          if (data) {
-            globalSuccessHandler();
-          }
-        },
         onError: globalErrorHandler,  // Global error handler for mutations
       },
     },

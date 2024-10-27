@@ -50,6 +50,7 @@
   "checkin_out_setting": "ຕັ້ງຄ່າການກວດສອບການເຂົ້າອອກ",
   "leave": "ການລາພັກ",
   "recruiting": "ການຮັບສະໝັກພະນັກງານ",
+  "more": "ເພີ່ມະຕືມ",
   "-----------error_message-----------": "-----------error_message-----------",
   "email or password is invalid": "ອີເມວ ຫຼື ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ",
   "CREDENTIALS_INVALID": "ຂໍ້ມູນປະຈຳຕົວບໍ່ຖືກຕ້ອງ"

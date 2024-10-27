@@ -52,6 +52,7 @@
   "checkin_out_setting": "Checkin/out Setting",
   "leave": "Leave",
   "recruiting": "Recruiting",
+  "more": "More",
   "-----------error_message-----------": "-----------error_message-----------",
   "email or password is invalid": "Email or Paassword is invalid",
   "CREDENTIALS_INVALID": "unrecognized by the system when attempting to authenticate or log in."
