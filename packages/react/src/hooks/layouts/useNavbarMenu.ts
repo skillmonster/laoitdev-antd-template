@@ -1,3 +1,4 @@
+import { menuItems } from "@/containers/layouts/admin/MenuItems";
 import { useLocation } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
@@ -6,6 +7,14 @@ export const useNavbarMenu = () => {
 
   // State to control drawer visibility for mobile
   const [drawerVisible, setDrawerVisible] = useState(false);
+
+  // Set the maximum number of top-level menu items to show
+  const MAX_VISIBLE_MENU_ITEMS = 8; // Modify this value to set the visible limit
+  
+  // Split visible menu items and remaining overflow items
+  const visibleMenuItems = menuItems.slice(0, MAX_VISIBLE_MENU_ITEMS);
+  const overflowMenuItems = menuItems.slice(MAX_VISIBLE_MENU_ITEMS);
+
 
   // Show drawer
   const showDrawer = () => {
@@ -32,6 +41,10 @@ export const useNavbarMenu = () => {
     closeDrawer,
 
     // Keep track of current route
-    pathname
+    pathname,
+
+    // State Functions
+    visibleMenuItems,
+    overflowMenuItems
   };
 };

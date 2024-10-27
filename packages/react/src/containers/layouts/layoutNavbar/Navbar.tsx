@@ -37,9 +37,6 @@ import ThemeSwitcher from '../admin/ThemeSwitcher';
 const { Header } = Layout;
 const { SubMenu } = AntdMenu;
 
-// Set the maximum number of top-level menu items to show
-const MAX_VISIBLE_MENU_ITEMS = 8; // Modify this value to set the visible limit
-
 export const Navbar: React.FC = () => {
   const { userInfo } = useUserProfile();
   const { isDark } = useTheme();
@@ -52,11 +49,12 @@ export const Navbar: React.FC = () => {
 
     // Keep track of current route
     pathname,
+
+    // State Functions
+    visibleMenuItems,
+    overflowMenuItems,
   } = useNavbarMenu();
 
-  // Split visible menu items and remaining overflow items
-  const visibleMenuItems = menuItems.slice(0, MAX_VISIBLE_MENU_ITEMS);
-  const overflowMenuItems = menuItems.slice(MAX_VISIBLE_MENU_ITEMS);
 
   return (
     <>
