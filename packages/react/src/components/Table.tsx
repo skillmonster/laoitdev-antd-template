@@ -33,7 +33,7 @@ export const TableAntd = <TData extends { id: string }>({
   isFetchingNextPage,
 }: TableProps<TData>) => {
   // Get dynamic table height based on window size
-  const tableHeight = useDynamicTableHeight(300);
+  const tableHeight = useDynamicTableHeight(330);
 
   // Handle Ant Design Table pagination options
   const handlePageChange = (page: number, pageSize: number) => {
