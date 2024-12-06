@@ -16,8 +16,7 @@
     "main": "yarn workspace main dev"
   },
   "workspaces": [
-    "packages/react",
-    "packages/next"
+    "packages/react"
   ],
   "dependencies": {
     "@tanstack/react-query": "^5.52.2",
