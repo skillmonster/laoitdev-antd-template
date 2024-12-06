@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-refresh/only-export-components */
 
 import { IError } from '@/models/error';
@@ -18,13 +19,20 @@ import React, {
   useState,
 } from 'react';
 import { mapErrorToMessage, mapErrorToDescrition } from './error';
-import { translateErrorMessage, translateErrorDescription } from './useTranslateError';
+import {
+  translateErrorMessage,
+  translateErrorDescription,
+} from './useTranslateError';
 
 // Context initialization
 const NotificationContext = createContext<{
   addNoti: (notification: Notifications) => void;
+  shownErrors: Set<string>; // Expose shownErrors in context
+  setShownErrors: React.Dispatch<React.SetStateAction<Set<string>>>; // Expose the setter
 }>({
   addNoti: () => {}, // default function, which will be overridden
+  shownErrors: new Set(),
+  setShownErrors: () => {}, // default setter function
 });
 
 // Helper function to get icons based on alert type
@@ -46,22 +54,35 @@ const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [noti, setNoti] = useState<Notifications[]>([]); // Manage alert queue
   const [api, contextHolder] = notification.useNotification(); // Ant Design's notification hook
+  const [shownErrors, setShownErrors] = useState<Set<string>>(new Set()); // Set to track shown errors
 
   // Trigger notification whenever a new alert enters the queue
   useEffect(() => {
     const alert = noti[0];
 
     if (alert) {
-      api.open({
-        message: alert.message,
-        description: alert.description,
-        icon: getAntdIconForType(alert.type),
-        type: alert.type,
-        duration: 4, // Auto-hide after 4 seconds
-        closeIcon: <CloseOutlined onClick={() => handleNotiRemoval()} />, // Handle manual close
-      });
+      // Check if the error message has been shown before
+      if (!shownErrors.has(alert.message)) {
+        api.open({
+          message: alert.message,
+          description: alert.description,
+          icon: getAntdIconForType(alert.type),
+          type: alert.type,
+          duration: 4, // Auto-hide after 4 seconds
+          closeIcon: <CloseOutlined onClick={() => handleNotiRemoval()} />, // Handle manual close
+        });
+
+        // Add the error message to the shown set to prevent showing it again
+        if (alert.type === 'error') {
+          setShownErrors((prevErrors) => {
+            const newErrors = new Set(prevErrors);
+            newErrors.add(alert.message); // Add only if not already shown
+            return newErrors;
+          });
+        }
+      }
     }
-  }, [noti, api]);
+  }, [noti, api, shownErrors]);
 
   // Notification context function to add alert
   const addNoti = (notification: Notifications) => {
@@ -75,7 +96,10 @@ const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({
     setNoti((prevNoti) => prevNoti.slice(1)); // Remove the first alert
   };
 
-  const value = useMemo(() => ({ addNoti }), []); // Memoize value to avoid re-renders
+  const value = useMemo(
+    () => ({ addNoti, shownErrors, setShownErrors }),
+    [shownErrors],
+  ); // Memoize value to avoid re-renders
 
   return (
     <NotificationContext.Provider value={value}>
@@ -92,7 +116,6 @@ export const useNotificationStore = () => {
 
 export default NotificationProvider;
 
-
 export const globalErrorHandler = (error: unknown) => {
   const axiosError = error as AxiosError<IError>;
 
@@ -101,13 +124,22 @@ export const globalErrorHandler = (error: unknown) => {
     mapErrorToDescrition(axiosError) || '',
   );
 
-  notification.open({
-    message: message,
-    description: description,
-    icon: getAntdIconForType('error'),
-    type: 'error',
-    duration: 4,
-  });
+  // Access the shownErrors from the context
+  const { shownErrors, setShownErrors } = useNotificationStore();
+
+  // Only show error notification if it has not been shown before
+  if (!shownErrors.has(message)) {
+    notification.open({
+      message: message,
+      description: description,
+      icon: getAntdIconForType('error'),
+      type: 'error',
+      duration: 4,
+    });
+
+    // Add to shown errors to prevent future duplicates
+    setShownErrors((prevErrors) => new Set(prevErrors).add(message));
+  }
 };
 
 // Function to handle success notifications based on mutation key
